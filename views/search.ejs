@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Buscar PDF</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Búsqueda</h1>
+    <form action="/search" method="GET" class="search-form">
+      <label for="field">Campo:</label>
+      <select name="field" id="field" required>
+        <% campos.forEach(function(c) { 
+           let etiqueta = c.replace('_',' ');
+           etiqueta = etiqueta.charAt(0).toUpperCase() + etiqueta.slice(1);
+           if (c === 'details') etiqueta = 'Observaciones';
+        %>
+          <option value="<%= c %>"><%= etiqueta %></option>
+        <% }) %>
+      </select>
+      <label for="searchText">Texto:</label>
+      <input type="text" name="searchText" id="searchText" required />
+      <label style="font-size: 1em; margin-left: 10px;">
+        <input type="checkbox" name="deepSearch" value="1" />
+        Búsqueda Biblioteca
+      </label>
+      <button type="submit" class="btn">Buscar</button>
+      <a href="/" class="btn">Inicio</a>
+    </form>
+    
+    <% if (results && results.length > 0) { %>
+      <div style="display: flex; gap: 10px;">
+        <div style="width: 20%; max-height: 600px; overflow-y: auto; border: 1px solid #ccc; padding: 10px;">
+          <h2 style="text-align: center;">Resultados</h2>
+          <ul style="list-style: none; padding: 0;">
+            <% results.forEach(function(item, idx) { %>
+              <li data-index="<%= idx %>" style="padding: 5px; border-bottom: 1px solid #eee; cursor: pointer;">
+                <%= item.id %>
+              </li>
+            <% }); %>
+          </ul>
+        </div>
+        <div style="flex:1; display: flex; gap: 10px;">
+          <div id="detailContainer" style="width:45%; border:1px solid #ccc; padding:10px;">
+            <h2>Detalle</h2>
+            <p>Seleccione un resultado.</p>
+          </div>
+          <div id="pdfView" style="width:55%; border:1px solid #ccc; padding:10px;">
+            <h2>Vista PDF</h2>
+            <p>Seleccione un resultado.</p>
+          </div>
+        </div>
+      </div>
+      <script>
+        var searchResults = <%- JSON.stringify(results) %>;
+        var campos = <%- JSON.stringify(campos) %>;
+        var detailContainer = document.getElementById('detailContainer');
+        var pdfView = document.getElementById('pdfView');
+        var listItems = document.querySelectorAll('[data-index]');
+        
+        listItems.forEach(function(li) {
+          li.addEventListener('click', function() {
+            var i = this.getAttribute('data-index');
+            var doc = searchResults[i];
+            var pdfPath = doc.pdf_path || '';
+            if (!pdfPath.startsWith('/')) pdfPath = '/' + pdfPath.replace(/\\/g, '/');
+            var dHtml = '<h2>Detalle</h2><p><strong>ID:</strong> '+(doc.id||'')+'</p>';
+            campos.forEach(c => {
+              let etq = c.replace('_',' ');
+              etq = etq.charAt(0).toUpperCase() + etq.slice(1);
+              if (c === 'details') etq = 'Observaciones';
+              dHtml += '<p><strong>'+etq+':</strong> '+(doc[c]||'')+'</p>';
+            });
+            detailContainer.innerHTML = dHtml;
+            pdfView.innerHTML = '<h2>Vista PDF</h2>' +
+              (pdfPath?('<embed src="'+pdfPath+'" type="application/pdf" width="100%" height="500px">'):'');
+          });
+        });
+      </script>
+    <% } else { %>
+      <p>Sin resultados</p>
+    <% } %>
+  </div>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Subir Múltiples PDF</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Múltiples Documentos</h1>
+    <form id="multiUploadForm" action="/upload-multiple" method="POST" enctype="multipart/form-data" class="upload-form">
+      <input type="file" name="documents" id="documents" accept="application/pdf" multiple required class="custom-file-input" />
+      <label for="documents" class="btn">Seleccionar PDFs</label>
+      <a href="/" class="btn">Inicio</a>
+    </form>
+    <% if (uploadedList && uploadedList.length > 0) { %>
+      <div>
+        <h2>Resultados:</h2>
+        <ul>
+          <% uploadedList.forEach(item => { %>
+            <% if(item.status.indexOf('Duplicado') !== -1 || item.status.indexOf('Error') !== -1){ %>
+              <li style="background-color:#ffe6e6;padding:5px;border-radius:4px;">
+                <strong><%= item.file %></strong> - <%= item.status %>
+              </li>
+            <% } else { %>
+              <li><strong><%= item.file %></strong> - <%= item.status %></li>
+            <% } %>
+          <% }); %>
+        </ul>
+      </div>
+    <% } %>
+  </div>
+  
+  <div class="svg-bg">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+      <path fill="#a2d9ff" fill-opacity="1"
+        d="M0,96L40,85.3C80,75,160,53,240,42.7C320,32,400,32,480,64C560,96,640,160,720,165.3C800,171,880,117,960,96C1040,75,1120,85,1200,101.3C1280,117,1360,139,1400,149.3L1440,160L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z">
+      </path>
+    </svg>
+  </div>
+  
+  <script>
+    // funcion enviar al seleccionar
+    document.getElementById('documents').addEventListener('change', function() {
+      if (this.files.length > 0) {
+        document.getElementById('multiUploadForm').submit();
+      }
+    });
+  </script>
+</body>
+</html>
