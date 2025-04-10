@@ -42,7 +42,7 @@ node server.js
 http://localhost:3002
 
 
-![Capturas]
+Algunas Capturas
 
 
 
