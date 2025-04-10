@@ -42,7 +42,7 @@ node server.js
 http://localhost:3002
 
 
-Algunas Capturas
+Capturas
 
 
 
@@ -51,11 +51,10 @@ Algunas Capturas
 
 
 
-![2025-04-10 02_22_00-Subir Documento PDF](https://github.com/user-attachments/assets/d68e5285-a7f0-4302-b108-e8fabd1c0d7f)
+![2025-04-11 01_01_35-Subir Documento PDF](https://github.com/user-attachments/assets/cb0cf12b-5280-45df-8d21-0415ca0a1c95)
 
 
 
-![2025-04-10 02_32_05-Buscar Sentencias](https://github.com/user-attachments/assets/932a2c22-f797-4769-96d8-cccbbc96f536)
 
-
+![2025-04-11 01_00_56-Buscar Sentencias](https://github.com/user-attachments/assets/64a5290f-50e7-4b8a-8beb-95b967f87d42)
 
